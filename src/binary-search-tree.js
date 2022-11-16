@@ -70,6 +70,7 @@ class BinarySearchTree {
     let parent;
     let left;
     let right;
+    let parentRelation = '';
     while(current){
       if(current.data == data){
         left = current.left;
@@ -90,21 +91,39 @@ class BinarySearchTree {
           return;
         } else {
           if(!left){
-            parent.right = right;
-          } else if(!right) {
-            parent.left = left;
-          } else {
-            parent.left = right;
-            current = right;
-            while(current.left) {
-              current = current.left;
+            if(parentRelation == 'left'){
+              parent.left = right;
+            } else {
+              parent.right = right;
             }
-            current.left = left;
+          } else if(!right) {
+            if(parentRelation == 'left'){
+              parent.left = left;
+            } else {
+              parent.right = left;
+            }
+          } else {
+            if(parentRelation = 'left') {
+              parent.left = right;
+              current = right;
+              while(current.left) {
+                current = current.left;
+              }
+              current.left = left;
+            } else {
+              parent.right = left;
+              current = left;
+              while(current.right) {
+                current = current.right;
+              }
+              current.right = right;
+            }
           }
           return;
         }
       } else {
         parent = current;
+        parentRelation = data < current.data ? 'left' : 'right';
         current = data < current.data ? current.left : current.right;
       }
     }
